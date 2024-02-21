@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using PruebaTec02EYCD.Models;
+
 namespace PruebaTec02EYCD
 {
     public class Program
@@ -8,6 +11,8 @@ namespace PruebaTec02EYCD
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddDbContext<PruebaTec02EYCDDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("NombreTuCadenaDeConexion")));
+
 
             var app = builder.Build();
 
