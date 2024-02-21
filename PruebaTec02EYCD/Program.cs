@@ -11,7 +11,7 @@ namespace PruebaTec02EYCD
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-            builder.Services.AddDbContext<PruebaTec02EYCDDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("NombreTuCadenaDeConexion")));
+            builder.Services.AddDbContext<PruebaTec02EYCDDBContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("con")));
 
 
             var app = builder.Build();

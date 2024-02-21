@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 using PruebaTec02EYCD.Models;
 
 namespace PruebaTec02EYCD.Controllers
@@ -47,7 +48,7 @@ namespace PruebaTec02EYCD.Controllers
         // GET: Peliculas/Create
         public IActionResult Create()
         {
-            ViewData["IdDirectores"] = new SelectList(_context.Directores, "IdDirectores", "IdDirectores");
+            ViewData["IdDirectores"] = new SelectList(_context.Directores, "IdDirectores", "Nombre");
             return View();
         }
 
@@ -56,16 +57,20 @@ namespace PruebaTec02EYCD.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("IdPelicula,Titulo,Imagen,Sinopsis,AnioLanzamiento,Genero,IdDirectores")] Pelicula pelicula)
+        public async Task<IActionResult> Create([Bind("IdPelicula,Titulo,Imagen,Sinopsis,AnioLanzamiento,Genero,IdDirectores")] Pelicula pelicula, IFormFile imagen)
         {
-            if (ModelState.IsValid)
+            if (imagen != null && imagen.Length > 0)
             {
-                _context.Add(pelicula);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                using (var memoryStream = new MemoryStream())
+                {
+                    await imagen.CopyToAsync(memoryStream);
+                    pelicula.Imagen = memoryStream.ToArray();
+
+                }
             }
-            ViewData["IdDirectores"] = new SelectList(_context.Directores, "IdDirectores", "Nombre", pelicula.IdDirectores);
-            return View(pelicula);
+            _context.Add(pelicula);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
         }
 
         // GET: Peliculas/Edit/5

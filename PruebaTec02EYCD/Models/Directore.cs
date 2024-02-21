@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace PruebaTec02EYCD.Models
 {
@@ -10,6 +11,7 @@ namespace PruebaTec02EYCD.Models
             Peliculas = new HashSet<Pelicula>();
         }
 
+        
         public int IdDirectores { get; set; }
         public string? Nombre { get; set; }
         public string? Nacionalidad { get; set; }
